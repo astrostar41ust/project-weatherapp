@@ -18,7 +18,7 @@ mongoose.connect('mongodb+srv://admin:212546@cluster0.gexcq.mongodb.net/?retryWr
 )
 */
 mongoose.connect("mongodb://localhost:27017/cpe-project")
-
+app.use(cors())
 app.use(express.static('public'))
 app.use(express.json()) 
 app.use(express.urlencoded({extended:true}))
@@ -35,7 +35,7 @@ app.set('view engine', 'ejs')
 
 
 
-app.get('/', indexController)
+//app.get('/', indexController)
 /*(req,res) => {
     res.sendFile(__dirname+ '/views/index.html')
 })*/
@@ -110,7 +110,12 @@ function restoreMongoDB() {
     })
 }
 
+app.use(express.static("./views/index.html"))
 
+app.get("*", (req,res) => {
+    res.sendFile(path.resolve(__dirname,"views","index.html")
+    )
+})
 
 app.listen(3500,() => {
 
