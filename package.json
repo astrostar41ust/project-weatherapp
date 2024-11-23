@@ -17,7 +17,7 @@
     "start": "nodemon server.js"
   
   },
-  "name": "cpe406-project",
+  "name": "project-weatherapp",
   "version": "1.0.0",
   "main": "server.js",
   "author": "",
