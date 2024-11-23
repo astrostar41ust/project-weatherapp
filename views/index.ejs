@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+    <title>Weather Forecast</title>
+    <link href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    
+</head>
+<body>
+
+    <div class="containner">
+        <div class="header">
+            <h1>Temp Zone</h1>
+            
+            <div class="weather-input">
+                <input type="text" id="country_input" placeholder="Enter country name"></input>
+                <button type="button" id="searchBtn" class="button button4">
+                    <i class="fa-regular fa-search"></i> Search
+                </button>
+				
+                
+            </div>
+ 
+        </div>
+		
+        <div class="weather-data">
+                   
+		</div>
+		<div>
+		<p>Computer Engineer CPE406 &copy;</p>
+		</div>
+</body>
+
+<script>
+
+const apiKey = "f23b2cab2257ace63600d1793029e0ad";
+const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=London";
+let coountryInput = document.getElementById('country_input');
+let searchBtn = document.getElementById('searchBtn');
+
+
+currentWeatherCard = document.querySelectorAll('.weather-data')[0];
+
+
+function getWeatherDetails(name, lat, lon, country, state){
+    let WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`
+    days = [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday'
+    ],
+    months = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
+    ];
+
+    fetch(WEATHER_API_URL).then(res => res.json()).then(data => {
+        console.log(data);
+        
+        let date = new Date();
+		
+        currentWeatherCard.innerHTML         =  `
+                    <div class="current-weather">
+                        <div class="details">
+                            <p>Temperature : </p>
+                            <h2> ${(data.main.temp - 273.15).toFixed(2)}&deg;C</h2>
+                        </div>
+					
+                        <div class="weather-icon">
+                            <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt=""> </img>
+                        </div>
+                    </div>
+                    <p>${data.weather[0].description}</p>
+                    <div class="card-footer">
+                            <p><i class="fa-light fa-calendar"></i> &nbsp;${days[date.getDay()]}, 
+                            ${date.getDate()}, ${months[date.getMonth()]} ${date.getFullYear()}</p>
+                            <p><i class="fa-light fa-location-dot"></i> &nbsp;${name}, ${country}</p>
+                    </div>
+             
+                    `;
+            
+            const currentTime = new Date()
+            fetch('/result', {method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                
+                timestamp: currentTime,
+                temperature : (data.main.temp - 273.15).toFixed(2),
+                weather_description : (data.weather[0].description),
+                city : name,
+                country : country
+                
+            
+            })
+        })
+
+    }).catch(() => {
+        alert('Failed to fetch current weather');    
+    });
+    
+};         
+function getCityCoordinates(){
+   
+    let coountryName = coountryInput.value.trim();
+    coountryName.value = '';
+    if(!coountryName) return;
+    let GEOCODING_API_URL = `http://api.openweathermap.org/geo/1.0/direct?q=${coountryName}&limit=1&appid=${apiKey}`;
+    fetch(GEOCODING_API_URL).then(res => res.json()).then(data =>{
+        
+        console.log(data)
+		
+        let {name, lat, lon, country, state} = data[0];
+        getWeatherDetails(name, lat, lon, country, state);
+        
+    }).catch(() => {
+        alert(`Failed to fetch coordinates of ${coountryName}`);
+    });
+}
+           
+
+
+
+
+searchBtn.addEventListener("click", getCityCoordinates);
+
+</script>
+</html>
