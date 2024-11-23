@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const app = express()
 const expressSession = require('express-session')
-
+const port = process.env.PORT || 3500
 
 
 //Controllers
@@ -112,7 +112,7 @@ function restoreMongoDB() {
 
 
 
-app.listen(3500,() => {
+app.listen(port,() => {
 
     console.log('server is running')
 })
