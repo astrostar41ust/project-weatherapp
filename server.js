@@ -35,9 +35,10 @@ app.set('view engine', 'ejs')
 
 
 
-app.get('/', (req,res) => {
+app.get('/', indexController)
+/*(req,res) => {
     res.sendFile(__dirname+ '/views/index.html')
-})
+})*/
 app.post('/result', storeDataController)
 
 

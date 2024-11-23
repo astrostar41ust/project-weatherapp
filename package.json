@@ -19,7 +19,7 @@
   },
   "name": "cpe406-project",
   "version": "1.0.0",
-  "main": "database.js",
+  "main": "server.js",
   "author": "",
   "license": "ISC",
   "description": ""
