@@ -21,13 +21,13 @@ const indexController = require('./controllers/indexController')
 const storeDataController = require('./controllers/storeDataController')
 
 //Mongodb Connection
-/*
+
 mongoose.connect('mongodb+srv://admin:212546@cluster0.gexcq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
     {useNewUrlParser : true}
 )
-*/
+
 //Mongodb Connection
-mongoose.connect("mongodb://localhost:27017/cpe-project")
+//mongoose.connect("mongodb://localhost:27017/cpe-project")
 
 
 // view engine setup
@@ -77,7 +77,7 @@ app.use(expressSession({
 
 
 app.get('/', indexController);
-app.post('/result', storeDataController)
+app.post('/', storeDataController)
 
 
 //app.get('/', indexController)
@@ -87,7 +87,7 @@ app.post('/result', storeDataController)
 
 
 //Backup
-/*
+
 const { spawn } = require('child_process')
 const cron = require('node-cron')
 
@@ -119,13 +119,13 @@ function backupMongoDB() {
         else console.log('Backup is successful')
     })
 }
-*/
+
 
 //Restore
 //use 'restoreMongoDB()' to restore
 
 //restoreMongoDB()
-/*
+
 function restoreMongoDB() {
     
     const child = spawn('mongorestore', [
@@ -151,7 +151,7 @@ function restoreMongoDB() {
     })
 }
 
-*/
+
 
 
 app.listen(8080,() => {
