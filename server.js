@@ -3,11 +3,20 @@ const ejs = require('ejs')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const app = express()
+
+//var createError = require('http-errors');
+//var path = require('path');
+//var cookieParser = require('cookie-parser');
+//var logger = require('morgan');
 const expressSession = require('express-session')
-const port = process.env.PORT || 3500
 
 
 //Controllers
+
+/*
+var indexRouter = require('./routes/indexController');
+var storeDataRouter = require('./routes/storeDataController');
+*/
 const indexController = require('./controllers/indexController')
 const storeDataController = require('./controllers/storeDataController')
 
@@ -17,8 +26,44 @@ mongoose.connect('mongodb+srv://admin:212546@cluster0.gexcq.mongodb.net/?retryWr
     {useNewUrlParser : true}
 )
 */
+//Mongodb Connection
 mongoose.connect("mongodb://localhost:27017/cpe-project")
-app.use(cors())
+
+
+// view engine setup
+//app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+/*
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+*/
+/*
+app.use('/', indexRouter);
+app.use('/result', storeDataRouter);
+*/
+
+// catch 404 and forward to error handler
+/*
+app.use(function(req, res, next) {
+    next(createError(404));
+  });
+
+  // error handler
+app.use(function(err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+  
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
+  });
+*/
+
 app.use(express.static('public'))
 app.use(express.json()) 
 app.use(express.urlencoded({extended:true}))
@@ -29,30 +74,26 @@ app.use(expressSession({
     saveUninitialized: true,
     secret: "node secret"
 }))
-    
-app.set('view engine', 'ejs')
 
 
+app.get('/', indexController);
+app.post('/result', storeDataController)
 
 
 //app.get('/', indexController)
 /*(req,res) => {
     res.sendFile(__dirname+ '/views/index.html')
 })*/
-app.post('/result', storeDataController)
-
-
 
 
 //Backup
-
+/*
 const { spawn } = require('child_process')
-const path = require('path')
 const cron = require('node-cron')
 
 const DB_NAME = "cpe-project"
 const ARCHIVE_PATH = path.join(__dirname,'backup',`${DB_NAME}.gzip`)
-cron.schedule('*/1 * * * *',() => backupMongoDB())
+cron.schedule('* /1 * * * *',() => backupMongoDB())
 
 function backupMongoDB() {
     
@@ -78,13 +119,13 @@ function backupMongoDB() {
         else console.log('Backup is successful')
     })
 }
-
+*/
 
 //Restore
 //use 'restoreMongoDB()' to restore
 
 //restoreMongoDB()
-
+/*
 function restoreMongoDB() {
     
     const child = spawn('mongorestore', [
@@ -110,14 +151,10 @@ function restoreMongoDB() {
     })
 }
 
-app.use(express.static("./views/index.html"))
+*/
 
-app.get("*", (req,res) => {
-    res.sendFile(path.resolve(__dirname,"views","index.html")
-    )
-})
 
-app.listen(3500,() => {
+app.listen(8080,() => {
 
     console.log('server is running')
 })

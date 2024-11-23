@@ -1,3 +1,4 @@
+
 const User = require('../models/User')
 
 module.exports = (req,res) => {
@@ -9,3 +10,5 @@ module.exports = (req,res) => {
         console.log("error")
     })
 }
+
+
