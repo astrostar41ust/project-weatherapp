@@ -93,7 +93,7 @@ const cron = require('node-cron')
 
 const DB_NAME = "cpe-project"
 const ARCHIVE_PATH = path.join(__dirname,'backup',`${DB_NAME}.gzip`)
-cron.schedule('* /1 * * * *',() => backupMongoDB())
+cron.schedule('*/1 * * * *',() => backupMongoDB())
 
 function backupMongoDB() {
     
