@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -26,15 +26,12 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
-
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
-
+      
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: release.zip
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
@@ -50,20 +47,17 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: node-app
-
-      - name: Unzip artifact for deployment
-        run: unzip release.zip
       
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2E6406DA3E764754B5E8A3ABA68F9753 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_CCA33359B5AA4F46A15FFE3F9EA508D8 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C751A1B733F1449D878094727C3E532F }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_09D445B74BF34D6B93E59AC4D6155889 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_EB06F15D95854BB891F4356A4B56B041 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_AFECFBC2031441A594237493476E56C4 }}
 
       - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
+        id: deploy-to-webapp
         with:
           app-name: 'weatherzone'
           slot-name: 'Production'
