@@ -47,7 +47,7 @@ const ARCHIVE_PATH = path.join(__dirname,'backup',`${DB_NAME}.gzip`)
 
 //mongodump mongodb+srv://admin:212546@cluster0.gexcq.mongodb.net/
 
-cron.schedule('*/1 * * * * ',() => backupMongoDB())
+cron.schedule('*/5 * * * * ',() => backupMongoDB())
 
 function backupMongoDB() {
     
