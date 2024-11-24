@@ -23,7 +23,7 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 // view engine setup
 app.set('view engine', 'ejs');
 
-app.use(express.static('public'))
+app.use(express.static('views'))
 app.use(express.json()) 
 app.use(express.urlencoded({extended:true}))
 
