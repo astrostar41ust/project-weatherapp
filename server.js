@@ -3,7 +3,7 @@ const ejs = require('ejs')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const app = express()
-
+require('dotenv').config();
 
 
 //Controllers
@@ -12,7 +12,9 @@ const storeDataController = require('./controllers/storeDataController')
 
 //Mongodb Connection
 
-mongoose.connect('mongodb+srv://admin:212546@cluster0.gexcq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+//mongoose.connect('mongodb+srv://admin:212546@cluster0.gexcq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 //Mongodb Connection
 //mongoose.connect("mongodb://localhost:27017/cpe-project")
