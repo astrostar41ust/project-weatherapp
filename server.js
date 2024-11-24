@@ -31,7 +31,7 @@ app.get('/', (req,res) => {
 
 */
 app.get('/', indexController);
-app.post('/', storeDataController)
+app.post('/result', storeDataController)
 
 
 //Backup
