@@ -25,8 +25,11 @@ app.use(express.static('public'))
 app.use(express.json()) 
 app.use(express.urlencoded({extended:true}))
 
+app.get('/', (req,res) => {
+    res.sendFile(__dirname+ '/views' + '/index.html')})
 
-app.get('/', indexController);
+
+//app.get('/', indexController);
 app.post('/', storeDataController)
 
 
@@ -48,8 +51,7 @@ cron.schedule('*/1 * * * * ',() => backupMongoDB())
 function backupMongoDB() {
     
     const child = spawn('mongodump',
-        ['mongodb+srv://admin@cluster0.gexcq.mongodb.net/test',
-        '--gzip'
+        ['mongodb+srv://admin@cluster0.gexcq.mongodb.net/test','--gzip'
     ])
 
     /*
@@ -61,6 +63,7 @@ function backupMongoDB() {
     */  
 
     child.stdin.write("212546\n");
+    
     child.stdout.on('data',(data) => {
         console.log('stdout:\n', data)
     })
@@ -75,6 +78,7 @@ function backupMongoDB() {
         else if (signal) console.log ('Process killed with signal:', signal)
         else console.log('Backup is successful')
     })
+        
 }
 
 
