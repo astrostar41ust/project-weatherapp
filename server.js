@@ -77,21 +77,16 @@ app.use(expressSession({
 
 
 app.get('/', indexController);
-app.post('/', storeDataController)
-
-
-//app.get('/', indexController)
-/*(req,res) => {
-    res.sendFile(__dirname+ '/views/index.html')
-})*/
+app.post('/result', storeDataController)
 
 
 //Backup
 
 const { spawn } = require('child_process')
+const path = require('path')
 const cron = require('node-cron')
 
-const DB_NAME = "cpe-project"
+const DB_NAME = "test"
 const ARCHIVE_PATH = path.join(__dirname,'backup',`${DB_NAME}.gzip`)
 cron.schedule('*/1 * * * *',() => backupMongoDB())
 

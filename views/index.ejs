@@ -98,7 +98,7 @@ function getWeatherDetails(name, lat, lon, country, state){
                     `;
             
             const currentTime = new Date()
-            fetch('/', {method: 'POST',
+            fetch('/result', {method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
