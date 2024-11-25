@@ -1,5 +1,4 @@
 const User = require('../models/User')
-
 module.exports = (req,res) => {
     User.create(req.body).then(() => {
         
@@ -8,6 +7,8 @@ module.exports = (req,res) => {
     }).catch((error) =>{
         console.log("error")
     })
+    
+    
 }
 
 

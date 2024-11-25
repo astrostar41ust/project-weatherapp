@@ -7,16 +7,15 @@ const cron = require('node-cron')
 const app = express()
 require('dotenv').config();
 
-
 //Controllers
 const indexController = require('./controllers/indexController')
 const storeDataController = require('./controllers/storeDataController')
 
 //Mongodb Connection
 
-//mongoose.connect('mongodb+srv://admin:212546@cluster0.gexcq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
+//mongoose.connect('mongodb+srv://admin:212546@cluster0.gexcq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+mongoose.connect(process.env.MONGODB_URI_CONNECTION_STRING, { useNewUrlParser: true })
+//mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 
 // view engine setup
@@ -35,7 +34,7 @@ app.post('/', storeDataController)
 
 //Backup
 
-const { spawn } = require('child_process')
+//const { spawn } = require('child_process')
 
 /*
 const DB_NAME = "test"
@@ -44,21 +43,24 @@ const ARCHIVE_PATH = path.join(__dirname,'backup',`${DB_NAME}.gzip`)
 
 //mongodump mongodb+srv://admin:212546@cluster0.gexcq.mongodb.net/
 
-cron.schedule('*/1 * * * * ',() => backupMongoDB())
 
+//cron.schedule('*/1 * * * * ',() => backupMongoDB())
+/*
 function backupMongoDB() {
     
     const child = spawn('mongodump',
         ['mongodb+srv://admin@cluster0.gexcq.mongodb.net/test','--gzip'
     ])
 
-    /*
+
+
+    
     const child = spawn('mongodump', [
         `--db=${DB_NAME}`,
         `--archive=${ARCHIVE_PATH}`,
         '--gzip'
     ])
-    */  
+     
 
     child.stdin.write("212546\n");
     
@@ -78,7 +80,7 @@ function backupMongoDB() {
     })
         
 }
-
+*/
 
 //Restore
 //use 'restoreMongoDB()' to restore
@@ -86,6 +88,7 @@ function backupMongoDB() {
 
 //mongorestore mongodb+srv://admin@cluster0.gexcq.mongodb.net/ --nsInclude test.datas
 
+/*
 function restoreMongoDB() {
     
     const child = spawn('mongorestore',
@@ -95,13 +98,14 @@ function restoreMongoDB() {
             '--gzip'
         ])
     
+    
         /*
     const child = spawn('mongorestore', [
         `--db=${DB_NAME}`,
         `--archive=${ARCHIVE_PATH}`,
         '--gzip'
     ])
-    */
+    
 
     child.stdout.on('data',(data) => {
         console.log('stdout:\n', data)
@@ -118,7 +122,7 @@ function restoreMongoDB() {
         else console.log('Restoring process is successful')
     })
 }
-
+*/
 
 
 

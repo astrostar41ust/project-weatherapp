@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/f6438fa2-86f1-4c3b-80a9-de086d446949/resourceGroups/NetworkWatcherRG/providers/Microsoft.Web/sites/azureweatherapp",
+    "appService.deploySubpath": "."
+}
