@@ -22,7 +22,7 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 // view engine setup
 app.set('view engine', 'ejs');
-app.use(express.static('views'))
+app.use(express.static('public'))
 app.use(express.json()) 
 app.use(express.urlencoded({extended:true}))
 /*
@@ -47,7 +47,7 @@ const ARCHIVE_PATH = path.join(__dirname,'backup',`${DB_NAME}.gzip`)
 
 //mongodump mongodb+srv://admin:212546@cluster0.gexcq.mongodb.net/
 
-cron.schedule('*/5 * * * * ',() => backupMongoDB())
+cron.schedule('*/1 * * * * ',() => backupMongoDB())
 
 function backupMongoDB() {
     
