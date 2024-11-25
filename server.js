@@ -2,6 +2,8 @@ const express = require('express')
 const ejs = require('ejs')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const path = require('path')
+const cron = require('node-cron')
 const app = express()
 require('dotenv').config();
 
@@ -16,13 +18,10 @@ const storeDataController = require('./controllers/storeDataController')
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
-//Mongodb Connection
-//mongoose.connect("mongodb://localhost:27017/cpe-project")
-
 
 // view engine setup
 app.set('view engine', 'ejs');
-app.use(express.static('views'))
+app.use(express.static('public'))
 app.use(express.json()) 
 app.use(express.urlencoded({extended:true}))
 /*
@@ -37,8 +36,6 @@ app.post('/', storeDataController)
 //Backup
 
 const { spawn } = require('child_process')
-const path = require('path')
-const cron = require('node-cron')
 
 /*
 const DB_NAME = "test"
