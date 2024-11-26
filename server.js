@@ -13,7 +13,7 @@ const storeDataController = require('./controllers/storeDataController')
 
 //Mongodb Connection
 
-//mongoose.connect('mongodb+srv://admin:212546@cluster0.gexcq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+//mongoose.connect('mongodb+srv://admin@cluster0.gexcq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 mongoose.connect(process.env.MONGODB_URI_CONNECTION_STRING, { useNewUrlParser: true })
 //mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 

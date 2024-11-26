@@ -14,11 +14,11 @@
 
     <div class="containner">
         <div class="header">
-            <h1>Temp Zone</h1>
+            <h1>Weather searching</h1>
             
             <div class="weather-input">
-                <input type="text" id="country_input" placeholder="Enter country name"></input>
-                <button type="button" id="searchBtn" class="button button4">
+                <input type="text" id="city_input" placeholder="Enter city name"></input>
+                <button type="button" id="searchBtn" class="button">
                     <i class="fa-regular fa-search"></i> Search
                 </button>
 				
@@ -31,15 +31,14 @@
                    
 		</div>
 		<div>
-		<p>Computer Engineer CPE406 &copy;</p>
+		<p>CPE406 &copy;</p>
 		</div>
 </body>
 
 <script>
 
 const apiKey = "f23b2cab2257ace63600d1793029e0ad";
-const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=London";
-let coountryInput = document.getElementById('country_input');
+let cityInput = document.getElementById('city_input');
 let searchBtn = document.getElementById('searchBtn');
 
 
@@ -121,10 +120,10 @@ function getWeatherDetails(name, lat, lon, country, state){
 };         
 function getCityCoordinates(){
    
-    let coountryName = coountryInput.value.trim();
-    coountryName.value = '';
-    if(!coountryName) return;
-    let GEOCODING_API_URL = `http://api.openweathermap.org/geo/1.0/direct?q=${coountryName}&limit=1&appid=${apiKey}`;
+    let cityName = cityInput.value.trim();
+    cityInput.value = '';
+    if(!cityName) return;
+    let GEOCODING_API_URL = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${apiKey}`;
     fetch(GEOCODING_API_URL).then(res => res.json()).then(data =>{
         
         console.log(data)
@@ -133,7 +132,7 @@ function getCityCoordinates(){
         getWeatherDetails(name, lat, lon, country, state);
         
     }).catch(() => {
-        alert(`Failed to fetch coordinates of ${coountryName}`);
+        alert(`Failed to fetch coordinates of ${cityName}`);
     });
 }
            
