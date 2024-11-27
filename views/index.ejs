@@ -7,140 +7,251 @@
     <title>Weather Forecast</title>
     <link href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css" rel="stylesheet">
     <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="css/style.css">
     
 </head>
 <body>
-
-    <div class="containner">
-        <div class="header">
-            <h1>Weather searching</h1>
-            
-            <div class="weather-input">
-                <input type="text" id="city_input" placeholder="Enter city name"></input>
-                <button type="button" id="searchBtn" class="button">
-                    <i class="fa-regular fa-search"></i> Search
-                </button>
-				
-                
-            </div>
- 
+    <nav>
+        <div class="navdiv">
+                <ul>
+                    <img src="https://cdn1.iconfinder.com/data/icons/hawcons/32/700457-icon-43-wind-512.png" alt="" width="80" height="60">
+                </ul>
+                <div class="weather-input">
+                    <input type="text" id="country_input" placeholder="Enter city name"></input>        
+                    <input type="text" id="name_input" placeholder="Enter your nickname"></input>
+                    <button type="button" id="searchBtn" class="button button4">
+                        <i class="fa-regular fa-search"></i> 
+                    </button>
+</div>
+    </nav>
+    <div class="weather-data">
+        <div class="fill">
+            <h1>Please fill your country in the box</h1>    
+            <div>
+                <p>Computer Engineer CPE406 &copy;</p>
+                </div>  
         </div>
 		
-        <div class="weather-data">
-                   
-		</div>
-		<div>
-		<p>CPE406 &copy;</p>
-		</div>
 </body>
 
 <script>
 
-const apiKey = "f23b2cab2257ace63600d1793029e0ad";
-let cityInput = document.getElementById('city_input');
-let searchBtn = document.getElementById('searchBtn');
+    const apiKey = "f23b2cab2257ace63600d1793029e0ad";
+    const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=London";
+    let coountryInput = document.getElementById('country_input');
+    let searchBtn = document.getElementById('searchBtn');
+    let nameInput = document.getElementById('name_input')
+    searchBtn.addEventListener('click', () => {
+    if ((nameInput.value || !coountryInput.value) == '') {
+        alert('Please enter your nickname.');
+    } 
+    else if((!nameInput.value || coountryInput.value) == ''){
+        alert('Please enter your city name.');
+    }
+    else if((coountryInput.value && nameInput) == ''){
+        alert('Please enter your city name and your nickname.');
+    }
+else{
+    getCityCoordinates();
+    //searchBtn.addEventListener("click", getCityCoordinates);
+}}
+);
 
-
-currentWeatherCard = document.querySelectorAll('.weather-data')[0];
-
-
-function getWeatherDetails(name, lat, lon, country, state){
-    let WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`
-    days = [
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday'
-    ],
-    months = [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec'
-    ];
-
-    fetch(WEATHER_API_URL).then(res => res.json()).then(data => {
-        console.log(data);
-        
-        let date = new Date();
-		
-        currentWeatherCard.innerHTML         =  `
-                    <div class="current-weather">
-                        <div class="details">
-                            <p>Temperature : </p>
-                            <h2> ${(data.main.temp - 273.15).toFixed(2)}&deg;C</h2>
-                        </div>
-					
-                        <div class="weather-icon">
-                            <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt=""> </img>
-                        </div>
-                    </div>
-                    <p>${data.weather[0].description}</p>
-                    <div class="card-footer">
-                            <p><i class="fa-light fa-calendar"></i> &nbsp;${days[date.getDay()]}, 
-                            ${date.getDate()}, ${months[date.getMonth()]} ${date.getFullYear()}</p>
-                            <p><i class="fa-light fa-location-dot"></i> &nbsp;${name}, ${country}</p>
-                    </div>
-             
-                    `;
-            
-            const currentTime = new Date()
-            fetch('/', {method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                
-                timestamp: currentTime,
-                temperature : (data.main.temp - 273.15).toFixed(2),
-                weather_description : (data.weather[0].description),
-                city : name,
-                country : country
-                
-            
-            })
-        })
-
-    }).catch(() => {
-        alert('Failed to fetch current weather');    
-    });
+    currentWeatherCard = document.querySelectorAll('.weather-data')[0];
     
-};         
-function getCityCoordinates(){
-   
-    let cityName = cityInput.value.trim();
-    cityInput.value = '';
-    if(!cityName) return;
-    let GEOCODING_API_URL = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${apiKey}`;
-    fetch(GEOCODING_API_URL).then(res => res.json()).then(data =>{
+    
+    function getWeatherDetails(name, lat, lon, country, state, nickName){
+        let FORECAST_API_URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+
+
+        let WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`
+        days = [
+            'Sunday',
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday'
+        ],
+        months = [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec'
+        ];
+    
         
-        console.log(data)
-		
-        let {name, lat, lon, country, state} = data[0];
-        getWeatherDetails(name, lat, lon, country, state);
+
+        fetch(WEATHER_API_URL).then(res => res.json()).then(data => {
+            console.log(data);
+            
+            let date = new Date();
+            
+            fetch(FORECAST_API_URL).then((res) => res.json()).then((forecastData) => {
+                console.log(forecastData);
+                let hourlyForecasts = forecastData.list.slice(0, 5);
+
+            fetch(`https://restcountries.com/v3.1/alpha/${country}`).then(res => res.json()).then(countryData => {
+                let flagUrl = countryData[0].flags.png; 
         
-    }).catch(() => {
-        alert(`Failed to fetch coordinates of ${cityName}`);
-    });
-}
-           
 
+    currentWeatherCard.innerHTML = `
+      <div class="current-weather">
+        <div class="current1">
+          <div class="current2">
+            <div class="details">
+              <div class="cityname">
+                <h2><i class="fa-light fa-location-dot"></i> &nbsp;${name}, ${country} <img src="${flagUrl}" alt="${country} flag" style="height: 1em;"> </h2> 
+                <p><i class="fa-light fa-calendar"></i> &nbsp;${days[date.getDay()]}, 
+                ${date.getDate()}, ${months[date.getMonth()]} ${date.getFullYear()}</p>
+                <h1> ${(data.main.temp - 273.15).toFixed(2)}&deg;</h1>
+              </div>
+              <div class="icon">
+                <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="" width="280" height="280">
+              </div>
+            </div>
+            <div class="forecast">  
+              <h2>TODAY'S FORECAST</h2>
+              <div class="con-fore">
+                
+                ${hourlyForecasts.map((hourlyForecast, index) => {
+                  let forecastDate = new Date(hourlyForecast.dt * 1000);
+                  let forecastTime = forecastDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+                  // ${index < 4 ? '<div class="verline"></div>' : ''} 
+                  return `
+                    <div class="forecast-day">
+                    <div class="forone">
+                        <div class="data">
+                      <div class="time">${forecastTime}</div>
+                      <div class="wea-icon"><img src="https://openweathermap.org/img/wn/${hourlyForecast.weather[0].icon}.png" alt=""></div>
+                      <div class="temp-for">${(hourlyForecast.main.temp - 273.15).toFixed(2)}&deg;</div>
+                      </div>
+                      ${index < 4 ? '<div class="verline"></div>' : ''}
+                    </div>
+                    
+                    </div>
+                  `;
+                }).join("")}
 
+              </div>
+            </div>
+          </div>
+          <div class="current3">
+            <div class="air-con">
+              <h2>AIR CONDITIONS</h2>
+              <div class="four-con">
+                <div class="conditions">
+                  <div class="icon-con"><img src="https://www.pngplay.com/wp-content/uploads/8/Temperature-Icon-Transparent-Background.png" alt="" width="40" height="25"></div>
+                  <div class="label"><p>Real feel</p> 
+                  <h1>${(data.main.feels_like - 273.15).toFixed(2)}&deg;</h1> 
+                  </div>
+                </div>
+                <div class="conditions">
+                  <div class="icon-con"><img src="https://symbols.getvecta.com/stencil_282/30_weather-wind-2.e3c5df138a.png" alt="" width="35" height="35"></div>
+                  <div class="label"><p>Wind</p>
+                  <h1>${(data.wind.speed * 3.6).toFixed(2)} km/hr</h1>  
+                  </div>
+                </div>
+                <div class="conditions">
+                  <div class="icon-con"><img src="https://images.vexels.com/content/240044/preview/rainy-clouds-color-stroke-dffe1c.png" alt=""width="35" height="35"></div>
+                  <div class="label"><p>Percent of Clouds</p>
+                  <h1>${data.clouds.all}%</h1>    
+                  </div>
+                </div>
+                <div class="conditions">
+                  <div class="icon-con"><img src="https://cdn-icons-png.flaticon.com/256/4148/4148460.png" alt=""width="35" height="25"></div>
+                  <div class="label"><p>Humidity</p>
+                  <h1>${data.main.humidity}</h1>      
+                  </div>
+                </div>
+                <div class="conditions">
+                  <div class="icon-con"><img src="https://cdn-icons-png.freepik.com/512/11682/11682284.png" alt=""width="30" height="30"></div>
+                  <div class="label"><p>Degree of wind</p>
+                  <h1>${data.wind.deg}&deg</h1>      
+                  </div>
+                </div>
+                <div class="conditions">
+                  <div class="icon-con"><img src="https://cdn-icons-png.flaticon.com/512/1839/1839341.png" alt=""width="35" height="25"></div>
+                  <div class="label"><p>Pressure</p>
+                  <h1>${(data.main.pressure / 10).toFixed(2)}Pka</h1>      
+                  </div>
+                </div>
 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
 
-searchBtn.addEventListener("click", getCityCoordinates);
+    })  
+})
+  .catch(() => {
+    alert("Failed to fetch forecast weather");
+  });         
+                const currentTime = new Date()
+                fetch('/', {method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    
+                    timestamp: currentTime,
+                    temperature : (data.main.temp - 273.15).toFixed(2),
+                    city : name,
+                    country : country,
+                    wind : (data.wind.speed * 3.6).toFixed(2),
+                    percentOfclouds : data.clouds.all,
+                    humidity : data.main.humidity,
+                    nickName : nickName,
+                    pressure: (data.main.pressure / 10).toFixed(2),
+                    degreeOfwind: data.wind.deg 
+                //
+                })
+            })
+    
+        }).catch((err) => {
+          console.error('Error fetching data:', err);
+          alert('Failed to fetch current weather: ' + err);
+        });
+        
+    };         
+    function getCityCoordinates(){
+       
+        let coountryName = coountryInput.value.trim();
+        coountryName.value = '';
+        let nickName = document.getElementById('name_input').value.trim();
+        if(!coountryName) return;
+        let GEOCODING_API_URL = `http://api.openweathermap.org/geo/1.0/direct?q=${coountryName}&limit=1&appid=${apiKey}`;
+        fetch(GEOCODING_API_URL).then(res => res.json()).then(data =>{
+            
+            console.log(data)
+            
+            let {name, lat, lon, country, state} = data[0];
+            getWeatherDetails(name, lat, lon, country, state,nickName);
+            
 
-</script>
+            
+        }).catch(() => {
+            alert(`Failed to fetch coordinates of ${coountryName}`);
+        });
+    }
+    
+  
+
+    
+    
+    
+    //searchBtn.addEventListener("click", getCityCoordinates);
+    
+    </script>
 </html>
